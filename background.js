@@ -3,38 +3,15 @@ let focus_time = 25;
 let minute = 25;
 let second = 0;
 let timer_status = 'Not Started';
-let interval = null;
+let start_time = null;
+let end_time = null;
+let time_remaining = null; // used for pauses
 
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.set({ session });
     chrome.storage.sync.set({ focus_time });
-    chrome.storage.sync.set({ minute });
-    chrome.storage.sync.set({ second });
     chrome.storage.sync.set({ timer_status });
+    chrome.storage.sync.set({ start_time });
+    chrome.storage.sync.set({ end_time });
+    chrome.storage.sync.set({ time_remaining })
 })
-
-chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'sync' && changes.timer_status?.newValue) {
-        timer_status = changes.timer_status.newValue;
-        if (timer_status === 'Playing') {
-            interval = setInterval(startTimer, 1000);
-        } else if (interval) {
-            clearInterval(interval);
-            interval = null;
-        }
-    }
-});
-
-function startTimer() {
-    if (second == 0) {
-        second = 59;
-    } else {
-        second = second - 1;
-    }
-    
-    if (second == 59){
-        minute -= 1
-        chrome.storage.sync.set({minute});
-      }
-    chrome.storage.sync.set({second});
-}
