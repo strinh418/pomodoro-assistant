@@ -1,0 +1,49 @@
+.heading {
+    width: 300px;
+    border-width: 0 0 .5px 0;
+    border-style: solid;
+    border-color: #c9c9c9;
+    display: flex;
+    padding: 10px;
+}
+
+.title {
+    flex: 1;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    color: #ff6666;
+    font-weight: 600;
+    padding-left: 5px;
+}
+
+.icon {
+    float:right;
+    width:22px;
+    height:22px;
+    padding-left: 1px;
+    padding-right:1px;
+}
+
+.timer {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 36px;
+    font-weight: 500;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.status {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    padding-top: 2px;
+}
+
+.buttons {
+    display: flex;
+}
+
+.button {
+    flex: 1;
+}

@@ -1,0 +1,30 @@
+{
+    "name": "Pomodoro Assistant",
+    "description": "Extension to enhance productivity and manage pomodoro sessions.",
+    "version": "1.0",
+    "manifest_version": 3,
+
+    "background": {
+        "persistent": true,
+        "service_worker": "background.js"
+    },
+
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "images/tomatoes.png",
+            "32": "images/tomatoes.png",
+            "48": "images/tomatoes.png",
+            "128": "images/tomatoes.png"
+        }
+    },
+
+    "icons": {
+        "16": "images/tomatoes.png",
+        "32": "images/tomatoes.png",
+        "48": "images/tomatoes.png",
+        "128": "images/tomatoes.png"
+    },
+
+    "permissions": ["storage"]
+}
