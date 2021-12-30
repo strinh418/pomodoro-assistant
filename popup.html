@@ -9,15 +9,45 @@
             <img src="images/tomatoes.png" style="width:25px;height:25px;">
             <div class="title">Assistant</div>
             <img src="images/restart.png" class="icon">
-            <img src="images/settings.png" class="icon">
+            <img src="images/settings.png" class="icon" id="settings_btn">
         </div>
-        <div class="timer" id="timer">
-            0:00
+        <div id=main_content>
+            <div class="timer" id="timer">
+                0:00
+            </div>
+            <div id="status" class="status"></div>
+            <div class="buttons">
+                <button class="button" id="start_stop">Start</button>
+                <span style="flex:1"></span>
+                <button class="button">Skip</button>
+            </div>
         </div>
-        <div id="status" class="status"></div>
-        <div class="buttons">
-            <button class="button" id="start_stop">Start</button>
-            <button class="button">Skip</button>
+        <div class=options id=options>
+            <div class=form_item>
+                <label for="focusLength">Length of focus interval (minutes): </label>
+                <span style="flex:1"></span>
+                <input class=num_input type="text" id="focusLength" name="focusLength">
+            </div>
+            <div class=form_item>
+                <label for="shortBreakLength">Length of short break (minutes): </label><br>
+                <span style="flex:1"></span>
+                <input class=num_input type="text" id="shortBreakLength" name="shortBreakLength">
+            </div> 
+            <div class=form_item>
+                <label for="longBreakLength">Length of long break (minutes): </label><br>
+                <span style="flex:1"></span>
+                <input class=num_input type="text" id="longBreakLength" name="longBreakLength">
+            </div>   
+            <div class=form_item>
+                <label for="numIntervals">Number of intervals until long break: </label><br>
+                <span style="flex:1"></span>
+                <input class=num_input type="text" id="numIntervals" name="numIntervals"><br>
+            </div>
+            <div class=form_item>
+                <button id='save_options'>Save changes</button>
+                <span style="flex:1"></span>
+                <button id='cancel_options'>Cancel</button>
+            </div>
         </div>
             
         <script src="popup.js"></script>

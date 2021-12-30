@@ -45,5 +45,30 @@
 }
 
 .button {
-    flex: 1;
+    flex: 2;
+    border-radius: 8px;
+    background-color: #ff6666;
+    border: 0px;
+    height: 26px;
+    width: 40px;
+}
+
+.button:hover {
+    background-color: #ff9966;
+}
+
+.options {
+    display: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+}
+
+.form_item {
+    padding-top: 3px;
+    padding-bottom: 2px;
+    display: flex;
+}
+
+.num_input {
+    width: 25px;
 }

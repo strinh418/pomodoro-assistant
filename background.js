@@ -1,5 +1,5 @@
 let session = 'Focus';
-let focus_time = 25;
+let focus_time = 1;
 let short_break = 5;
 let long_break = 15;
 let timer_status = 'Not Started';
@@ -12,35 +12,32 @@ let completed = 0;
 let alarm = null;
 
 chrome.runtime.onInstalled.addListener(() => {
-    chrome.storage.sync.set({ session });
-    chrome.storage.sync.set({ focus_time });
-    chrome.storage.sync.set({ short_break });
-    chrome.storage.sync.set({ long_break });
-    chrome.storage.sync.set({ timer_status });
-    chrome.storage.sync.set({ start_time });
-    chrome.storage.sync.set({ end_time });
-    chrome.storage.sync.set({ time_remaining });
-    chrome.storage.sync.set({ intervals });
-    chrome.storage.sync.set({ completed });
+    chrome.storage.sync.set({session, focus_time, short_break, long_break, timer_status, start_time, end_time, time_remaining, intervals, completed});
 })
 
 // Alarm listener for timer
 chrome.storage.onChanged.addListener(function (changes, area) {
     if (area === 'sync' && changes.end_time?.newValue) {
-        console.log("end time changed");
         end_time = changes.end_time.newValue;
-        chrome.alarms.create('IntervalTimer', {
-            when: end_time
-        });
-        console.log("alarm created");
+        if (end_time == -1) {
+            chrome.alarms.clearAll();
+            log("All alarms cleared");
+        } else {
+            end_time = changes.end_time.newValue;
+            const debug = new Date(end_time);
+            log('DEBUG created alarm that ends at ' + debug.toLocaleTimeString());
+            chrome.alarms.create('IntervalTimer', {
+                when: end_time
+            });
+            log("New alarm created");
+        }
     }
   });
 chrome.alarms.onAlarm.addListener(timerListener);
-console.log("listener added");
 
 function timerListener(alarm) {
     if (alarm.name === 'IntervalTimer') {
-        console.log("Timer finished!")
+        log("Timer has finished");
         chrome.storage.sync.get([
             'session',
             'focus_time',
@@ -91,33 +88,13 @@ function timerListener(alarm) {
             }
             chrome.storage.sync.set({session, timer_status, completed});
             chrome.alarms.clearAll();
+            log("Session updated to " + session + " and cleared alarms");
         });
-        /*const now = new Date();
-        if (session === 'Focus') {
-            chrome.notifications.create('focus' + now.getTime(), {
-                type: 'basic',
-                iconUrl: 'images/tomatoes.png',
-                title: 'Time to work!',
-                message: 'Time to start another interval.',
-                priority: 2
-            });
-        } else if (session === 'Short Break') {
-            chrome.notifications.create('short break'  + now.getTime(), {
-                type: 'basic',
-                iconUrl: 'images/tomatoes.png',
-                title: 'Time for a break!',
-                message: 'Great work on completing an interval.',
-                priority: 2
-            });
-        } else if (session === 'Long Break') {
-            chrome.notifications.create('long break'  + now.getTime(), {
-                type: 'basic',
-                iconUrl: 'images/tomatoes.png',
-                title: 'Time for a longer break!',
-                message: 'Great work on completing a cycle.',
-                priority: 2
-            });
-        }*/
     }
     
+}
+
+function log(msg) {
+    const now = new Date();
+    console.log(now.toLocaleTimeString() + ": " + msg);
 }
