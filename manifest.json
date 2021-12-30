@@ -25,5 +25,5 @@
         "128": "images/tomatoes.png"
     },
 
-    "permissions": ["storage"]
+    "permissions": ["storage", "alarms", "notifications"]
 }
