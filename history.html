@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Pomodoro Assistant</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body style="width:600px">
+        <div class="heading">
+            <img src="images/tomatoes.png" style="width:25px;height:25px;">
+            <div class="title">Assistant</div>
+            <img src="images/restart.png" class="icon">
+            <img src="images/settings.png" class="icon" id="settings_btn">
+            <a href="history.html"><img src="images/history.png" class="icon"></a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Pomodoros Completed</th>
+                    <th>Tasks Completed</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody id=history_table></tbody>
+        </table>
+        
+        <script src='history.js'></script>
+    </body>
+</html>

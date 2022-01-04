@@ -1,6 +1,6 @@
 let session = 'Focus';
 let focus_time = 1;
-let short_break = 5;
+let short_break = 1;
 let long_break = 15;
 let timer_status = 'Not Started';
 let start_time = null;
@@ -8,11 +8,12 @@ let end_time = null;
 let time_remaining = null; // used for pauses
 let intervals = 4;
 let completed = 0;
+let history = [];
 
 let alarm = null;
 
 chrome.runtime.onInstalled.addListener(() => {
-    chrome.storage.sync.set({session, focus_time, short_break, long_break, timer_status, start_time, end_time, time_remaining, intervals, completed});
+    chrome.storage.sync.set({session, focus_time, short_break, long_break, timer_status, start_time, end_time, time_remaining, intervals, completed, history});
 })
 
 // Alarm listener for timer
@@ -43,13 +44,17 @@ function timerListener(alarm) {
             'focus_time',
             'short_break',
             'completed',
-            'intervals'
+            'intervals',
+            'start_time',
+            'end_time'
         ], function(variables) {
             session = variables.session;
             focus_time = variables.focus_time;
             short_break = variables.short_break;
             completed = variables.completed;
             intervals = variables.intervals;
+            start_time = variables.start_time;
+            end_time = variables.end_time;
             timer_status = 'Not Started';
             const now = new Date();
             // Finished a focus interval
@@ -75,6 +80,7 @@ function timerListener(alarm) {
                         priority: 2
                     });
                 }
+                HistoryData.logNewPomodoro(new Date(start_time), new Date(end_time));
                 chrome.storage.sync.set({completed});
             } else if (session === 'Short Break' || session === 'Long Break') {
                 session = 'Focus';
@@ -98,3 +104,9 @@ function log(msg) {
     const now = new Date();
     console.log(now.toLocaleTimeString() + ": " + msg);
 }
+
+/*
+chrome.storage.sync.get("test", ({ test }) => {
+        log('TESTING ' + test);
+      });
+      */

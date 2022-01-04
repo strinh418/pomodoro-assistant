@@ -1,5 +1,4 @@
 .heading {
-    width: 300px;
     border-width: 0 0 .5px 0;
     border-style: solid;
     border-color: #c9c9c9;
@@ -57,6 +56,10 @@
     background-color: #ff9966;
 }
 
+.icon:hover {
+    background-color: #dedede;
+}
+
 .options {
     display: none;
     font-family: Arial, Helvetica, sans-serif;
@@ -72,3 +75,22 @@
 .num_input {
     width: 25px;
 }
+
+.table {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+.table th {
+    background-color: #ff6666;
+    color: white;
+    font-weight: 600;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.table td, .table th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }

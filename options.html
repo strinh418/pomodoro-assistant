@@ -12,17 +12,6 @@
             <img src="images/settings.png" class="icon" id="settings_btn">
             <a href="history.html"><img src="images/history.png" class="icon"></a>
         </div>
-        <div id=main_content>
-            <div class="timer" id="timer">
-                0:00
-            </div>
-            <div id="status" class="status"></div>
-            <div class="buttons">
-                <button class="button" id="start_stop">Start</button>
-                <span style="flex:1"></span>
-                <button class="button">Skip</button>
-            </div>
-        </div>
         <div class=options id=options>
             <div class=form_item>
                 <label for="focusLength">Length of focus interval (minutes): </label>
@@ -47,10 +36,11 @@
             <div class=form_item>
                 <button id='save_options'>Save changes</button>
                 <span style="flex:1"></span>
-                <button id='cancel_options'>Cancel</button>
+                <button id='cancel_options' href='popup.html'>Cancel</button>
             </div>
         </div>
         
-        <script src="popup.js"></script>
+        
+        <script src="options.js"></script>
     </body>
 </html>
