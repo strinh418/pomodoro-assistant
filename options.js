@@ -4,7 +4,27 @@ let shortBreakInput = document.getElementById('shortBreakLength');
 let longBreakInput = document.getElementById('longBreakLength');
 let intervalsInput = document.getElementById('numIntervals');
 
-save_options_btn.addEventListener('click', clickSaveOptions);
+setupOptions();
+
+function setupOptions() {
+    save_options_btn.addEventListener('click', clickSaveOptions);
+    chrome.storage.sync.get([
+        'focus_time',
+        'short_break',
+        'long_break',
+        'intervals'
+    ], function(variables) {
+        focus_time = variables.focus_time;
+        short_break = variables.short_break;
+        long_break = variables.long_break;
+        intervals = variables.intervals;
+
+        focusInput.value = focus_time;
+        shortBreakInput.value = short_break;
+        longBreakInput.value = long_break;
+        intervalsInput.value = intervals;
+    });
+}
 
 function clickSaveOptions() {
     if (focus_time != focusInput.value) {
@@ -23,6 +43,4 @@ function clickSaveOptions() {
         intervals = Number(intervalsInput.value);
         chrome.storage.sync.set({intervals});
     }
-    main_content.style.display = 'block';
-    options.style.display = 'none';
 }

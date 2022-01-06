@@ -1,6 +1,6 @@
 let session = 'Focus';
-let focus_time = 1;
-let short_break = 1;
+let focus_time = 15;
+let short_break = 5;
 let long_break = 15;
 let timer_status = 'Not Started';
 let start_time = null;
