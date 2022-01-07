@@ -1,20 +1,34 @@
 class HistoryEntry {
-    static currentEntry = null;
-    constructor(pomodoro) {
-        this.date = pomodoro.date;
-        this.startTime = pomodoro.startTime;
-        this.endTime = pomodoro.endTime;
-        this.numPomodoros = 1;
-        this.pomodoros = [pomodoro];
-        this.tasks = pomodoro.tasks;
-        this.rating = 5;
+    constructor(date, startTime, endTime, numPomodoros, pomodoros, tasks, rating) {
+        this.date = date;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.numPomodoros = numPomodoros;
+        this.pomodoros = pomodoros;
+        this.tasks = tasks;
+        this.rating = rating;
     }
 
+    static createEntry(pomodoro) {
+        return new HistoryEntry(pomodoro.date, pomodoro.startTime, pomodoro. endTime,
+            1, [pomodoro], pomodoro.tasks, 5);
+    }
+
+    static fromJson(json) {
+        var obj = JSON.parse(json);
+        return new HistoryEntry(obj.date, obj.startTime, obj.endTime, obj.numPomodoros,
+            obj.pomodoros, obj.tasks, obj.rating);
+    }
+    
     addPomodoroToEntry(pomodoro) {
         this.numPomodoros += 1;
         this.pomodoros.push(pomodoro);
         this.tasks += pomodoro.tasks;
         this.endTime = pomodoro.endTime;
+    }
+
+    toJson() {
+        return JSON.stringify(this);
     }
 }
 

@@ -1,6 +1,7 @@
 let status_bar = document.getElementById('status');
 let timer = document.getElementById('timer');
 let timer_btn = document.getElementById('start_stop');
+let skip_btn = document.getElementById('skip');
 
 var session;
 var timer_status;
@@ -24,6 +25,7 @@ chrome.storage.onChanged.addListener(storageListener);
 
 function setupPopup() {
     timer_btn.addEventListener('click', handleTimer);
+    skip_btn.addEventListener('click', skipSession);
     chrome.storage.sync.get([
         'session',
         'timer_status',
@@ -95,6 +97,15 @@ function setRemainingTime(timeDiff) {
     minute = Math.floor(timeDiff / (1000 * 60));
     second = Math.floor((timeDiff / 1000) % 60);
     ms = timeDiff % 1000;
+}
+
+function skipSession() {
+    if (end_time >= -1) {
+        end_time = -2;
+    } else {
+        end_time -= 1
+    }
+    chrome.storage.sync.set({ end_time });
 }
 
 // Click event handlers
@@ -194,7 +205,10 @@ function countdown() {
 
 // Chrome storage
 function storageListener(changes, area) {
-    if (area === 'sync' && changes.session?.newValue && changes.timer_status?.newValue) {
+    if (area === 'sync' && changes.timer_status?.newValue) {
+        timer_status = changes.timer_status.newValue;
+    }
+    if (area === 'sync' && changes.session?.newValue) {
         session = changes.session.newValue;
         log("Session changed to " + session);
         // Switching from break to focus
@@ -210,7 +224,6 @@ function storageListener(changes, area) {
             timer.style.backgroundColor = '#63d0ff';
             interval_time = long_break;
         }
-        timer_status = changes.timer_status.newValue;
         restartTimer();
     }
 }

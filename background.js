@@ -9,11 +9,12 @@ let time_remaining = null; // used for pauses
 let intervals = 4;
 let completed = 0;
 let history = [];
+let last_stored = null;
 
-let alarm = null;
 
 chrome.runtime.onInstalled.addListener(() => {
-    chrome.storage.sync.set({session, focus_time, short_break, long_break, timer_status, start_time, end_time, time_remaining, intervals, completed, history});
+    chrome.storage.sync.set({session, focus_time, short_break, long_break, timer_status, start_time, 
+        end_time, time_remaining, intervals, completed, history, last_stored});
 })
 
 // Alarm listener for timer
@@ -23,10 +24,25 @@ chrome.storage.onChanged.addListener(function (changes, area) {
         if (end_time == -1) {
             chrome.alarms.clearAll();
             log("All alarms cleared");
+        } else if (end_time < -1) {
+            chrome.alarms.clearAll();
+            chrome.storage.sync.get(['session', 'timer_status'], function(variables) {
+                session = variables.session;
+                timer_status = variables.timer_status;
+                if (session == 'Focus') {
+                    session = 'Short Break';
+                    chrome.storage.sync.set({ session });
+                } else if (session == 'Short Break' || session == 'Long Break') {
+                    session = 'Focus';
+                    chrome.storage.sync.set({ session });
+                }
+                if (timer_status != 'Not Started') {
+                    timer_status = 'Not Started';
+                    chrome.storage.sync.set({ timer_status });
+                }
+            });
         } else {
             end_time = changes.end_time.newValue;
-            const debug = new Date(end_time);
-            log('DEBUG created alarm that ends at ' + debug.toLocaleTimeString());
             chrome.alarms.create('IntervalTimer', {
                 when: end_time
             });
@@ -104,9 +120,3 @@ function log(msg) {
     const now = new Date();
     console.log(now.toLocaleTimeString() + ": " + msg);
 }
-
-/*
-chrome.storage.sync.get("test", ({ test }) => {
-        log('TESTING ' + test);
-      });
-      */

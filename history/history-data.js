@@ -5,35 +5,33 @@ class HistoryData {
     static logNewPomodoro(startDate, endDate) {
         // TODO: add tasks field
         var pomodoro = new PomodoroEntry(startDate, endDate);
-        if (HistoryData.currentEntry && pomodoro.endTime.getTime() - HistoryData.currentEntry.startTime.getTime() < 3600000) {
-            HistoryData.currentEntry.addPomodoroToEntry(pomodoro);
-        } else {
-            HistoryData.currentEntry = new HistoryEntry(pomodoro);
-        }
-
-        if (HistoryData.stored) {
-            HistoryData.updateHistoryEntryInStorage();
-        } else {
-            HistoryData.addHistoryEntryToStorage();
-        }
+        chrome.storage.sync.get('last_stored', ({ last_stored }) => {
+            if (last_stored && pomodoro.startTime.getTime() - last_stored < 3600000) {
+                HistoryData.updateHistoryEntryInStorage(pomodoro);
+            } else {
+                HistoryData.addHistoryEntryToStorage(pomodoro);
+            }
+            last_stored = endDate.getTime();
+            chrome.storage.sync.set({ last_stored});
+        })
     }
 
-    static updateHistoryEntryInStorage() {
+    static updateHistoryEntryInStorage(pomodoro) {
         chrome.storage.sync.get('history', ({ history }) => {
-            history.pop();
-            history.push(JSON.stringify(HistoryData.currentEntry));
-            log(HistoryData.currentEntry);
+            var lastEntry = HistoryEntry.fromJson(history.pop());
+            lastEntry.addPomodoroToEntry(pomodoro);
+            history.push(lastEntry.toJson());
             log(history);
             chrome.storage.sync.set({ history });
         })
     }
 
-    static addHistoryEntryToStorage() {
+    static addHistoryEntryToStorage(pomodoro) {
         chrome.storage.sync.get('history', ({ history }) => {
-            history.push(JSON.stringify(HistoryData.currentEntry));
+            var currentEntry = HistoryEntry.createEntry(pomodoro);
+            history.push(currentEntry.toJson());
             log(history);
             chrome.storage.sync.set({ history });
-            HistoryData.stored = true;
         })
     }
 }
